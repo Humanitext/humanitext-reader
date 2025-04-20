@@ -337,7 +337,7 @@ export default {
 
       if (matchingText.commentary && matchingText.commentary.length > 0) {
         console.log(matchingText.commentary)
-        
+
         //const endpoint = "http://54.92.185.36:3030/humanitext_reader/sparql";
         const endpoint = "https://dydra.com/junjun7613/humanitextonto/sparql";
 
@@ -571,9 +571,10 @@ export default {
 </script>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Greek&display=swap');
+/*@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Greek&display=swap');*/
 .greek-text {
-  font-family: 'Noto Sans Greek', sans-serif;
+  /*font-family: 'Noto Sans Greek', sans-serif;*/
+  font-family: 'Georgia', serif;
 }
 .scrollable {
   margin-top: 10px;

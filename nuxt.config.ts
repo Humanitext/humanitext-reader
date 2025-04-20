@@ -4,6 +4,9 @@ import vuetify from "vite-plugin-vuetify";
 export default defineNuxtConfig({
   modules: ["nuxt3-leaflet", "nuxt-swiper"],
   ssr: false,
+  app: {
+    cdnURL: '/_nuxt/', // 静的ファイルのパスを設定
+  },
   build: {
     transpile: ["vuetify"]
   },
@@ -21,7 +24,6 @@ export default defineNuxtConfig({
     },
   },
   css: [
-    '@/assets/css/main.css', // 必要な CSS ファイルを明示的に指定
     "@/assets/main.scss",
     "vuetify/lib/styles/main.sass",
     "@mdi/font/css/materialdesignicons.css",

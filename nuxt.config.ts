@@ -21,7 +21,6 @@ export default defineNuxtConfig({
     },
   },
   css: [
-    "/_nuxt/index.d5c3c800.css",
     "@/assets/main.scss",
     "vuetify/lib/styles/main.sass",
     "@mdi/font/css/materialdesignicons.css",

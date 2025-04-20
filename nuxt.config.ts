@@ -4,9 +4,6 @@ import vuetify from "vite-plugin-vuetify";
 export default defineNuxtConfig({
   modules: ["nuxt3-leaflet", "nuxt-swiper"],
   ssr: false,
-  app: {
-    cdnURL: '/_nuxt/', // 静的ファイルのパスを設定
-  },
   build: {
     transpile: ["vuetify"]
   },

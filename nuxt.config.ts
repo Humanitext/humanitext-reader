@@ -7,6 +7,9 @@ export default defineNuxtConfig({
   build: {
     transpile: ["vuetify"]
   },
+  axios: {
+    proxy: true,
+  },
   hooks: {
     "vite:extendConfig": (config) => {
       config.plugins!.push(vuetify());
@@ -27,4 +30,9 @@ export default defineNuxtConfig({
     "@/assets/styles/CETEIcean.css",
     //"vue3-treeselect/dist/vue3-treeselect.css",
   ],
+  nitro: {
+    routeRules: {
+      '/api/**': { proxy: process.env.API_BASE_URL },
+    },
+  },
 });

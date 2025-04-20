@@ -21,6 +21,7 @@ export default defineNuxtConfig({
     },
   },
   css: [
+    '@/assets/css/main.css', // 必要な CSS ファイルを明示的に指定
     "@/assets/main.scss",
     "vuetify/lib/styles/main.sass",
     "@mdi/font/css/materialdesignicons.css",

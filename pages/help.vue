@@ -11,19 +11,8 @@
   <v-app>
     <v-container>
       <div class="main-container">
-        <p>HIMIKO Editor for
-          Imageは、小川潤（国立情報学研究所）・中村覚（東京大学史料編纂所）<br />によって開発されたRDFデータ編集エディタです。<br /><br />このページでは、エディタの使い方に関する各種資料(ブログ記事・解説動画等)を順次公開していきます。
+        <p>原典と注釈を対応参照するためのアプリケーションです。
         </p>
-        <ul class="blog-list">
-          <li class="blog-list-item">
-            <a href="https://junjun7613.hatenablog.com/entry/2024/04/07/154436" target="_blank"
-              class="blog-link">「HIMIKO Editor for Imageの使い方（基礎編）」</a>
-          </li>
-          <li class="blog-list-item">
-            <a href="https://junjun7613.hatenablog.com/entry/2024/04/08/130128" target="_blank"
-              class="blog-link">「HIMIKO Editor for Imageの使い方（カスタマイズ編）」</a>
-          </li>
-        </ul>
       </div>
     </v-container>
   </v-app>

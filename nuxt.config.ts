@@ -32,7 +32,7 @@ export default defineNuxtConfig({
   ],
   nitro: {
     routeRules: {
-      '/api/**': { proxy: process.env.API_BASE_URL },
+      '/api/**': { proxy: 'https://humanitext-dts.vercel.app/' },
     },
   },
 });

@@ -368,14 +368,14 @@ export default {
               //console.log(data);
 
               data.results.bindings.forEach((binding) => {
-                //const dts_api = `https://humanitext-dts.vercel.app/api/dts/document?id=urn:${binding.annotator.value}.${binding.work.value}:${binding.book.value}&ref=${binding.seg.value}`;
-                const dts_api = `api/dts/document?id=urn:${binding.annotator.value}.${binding.work.value}:${binding.book.value}&ref=${binding.seg.value}`;
+                const dts_api = `https://humanitext-dts.vercel.app/api/dts/document?id=urn:${binding.annotator.value}.${binding.work.value}:${binding.book.value}&ref=${binding.seg.value}`;
+                //const dts_api = `/api/dts/document?id=urn:${binding.annotator.value}.${binding.work.value}:${binding.book.value}&ref=${binding.seg.value}`;
                 console.log(dts_api);
                 const dts_data = fetch(dts_api)
                 console.log(dts_data);
                 c.getHTML5(dts_api, function(data) {
                 //c.getHTML5(`/api/dts/document?id=urn:${binding.annotator.value}.${binding.work.value}:${binding.book.value}&ref=${binding.seg.value}`, function (data) {
-                  //console.log(data);
+                  console.log(data);
                   // xml:idがroute.params.bookの要素を取得
                   const body = data.getElementById(binding.seg.value);
                   

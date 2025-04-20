@@ -35,8 +35,8 @@ export default {
     const route = useRoute();
     const router = useRouter();
 
-    const endpoint = "http://54.92.185.36:3030/humanitext_reader/sparql";
-    //const endpoint = "https://dydra.com/junjun7613/humanitextonto/sparql";
+    //const endpoint = "http://54.92.185.36:3030/humanitext_reader/sparql";
+    const endpoint = "https://dydra.com/junjun7613/humanitextonto/sparql";
     const query = `
       PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
       PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>

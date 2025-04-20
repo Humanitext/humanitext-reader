@@ -45,8 +45,9 @@
         </v-card>
       -->
       </v-col>
-      <v-col cols="12" md="6" class="scrollable">
+      <v-col id="commentary_container" cols="12" md="6" class="scrollable">
         <!--commentary_listが存在する場合には、commentary_list内のcommentaryをループ処理-->
+        <!--
         <div v-if="commentary_list && commentary_list.length > 0">
           <v-card 
             v-for="commentary in commentary_list" 
@@ -66,16 +67,7 @@
               <p>{{commentary.annotator}}: </p>
               <p>{{commentary.work}}:{{commentary.book}}</p>
             </v-card-title>
-            <!--
-            <v-card-text
-              style="
-                font-family: Georgia, 'Times New Roman', Times, serif;
-                font-size: 18px;
-              "
-            >
-              {{commentary.description}}
-            </v-card-text>
-            -->
+
             <div id="Commentary_TEI" style="
               margin-left: 20px;
               margin-right: 20px;
@@ -150,6 +142,7 @@
           </v-card-text>
         </v-card>
       </div>
+      -->
       </v-col>
     </v-row>
 
@@ -218,29 +211,26 @@ export default {
     const processedText = ref('');
     const isTransSummDialogOpen = ref(false);
 
-    const endpoint = "http://54.92.185.36:3030/humanitext_reader/sparql";
-    //const endpoint = "https://dydra.com/junjun7613/humanitextonto/sparql";
+    //const endpoint = "http://54.92.185.36:3030/humanitext_reader/sparql";
+    const endpoint = "https://dydra.com/junjun7613/humanitextonto/sparql";
     const query = `
         PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
         PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
-        SELECT DISTINCT ?text ?line ?description ?commentary WHERE {
+        SELECT DISTINCT ?text ?line  ?commentary WHERE {
           ?author a <http://example.org/vocabulary/Author> ;
                   rdfs:label "${route.params.author}" .
           ?work a <http://example.org/vocabulary/Work> ;
                   rdfs:label "${route.params.work}" ;
                   <http://purl.org/dc/elements/1.1/creator> ?author .
           ?text a <http://example.org/vocabulary/Text>;
-              <http://example.org/vocabulary/textIndex> ?index ;
               <http://example.org/vocabulary/correspondingWork> ?work ;
               <http://example.org/vocabulary/correspondingBook> "${route.params.book}" ;
               <http://purl.org/dc/elements/1.1/creator> ?author.
-          ?text <http://example.org/vocabulary/correspondingSeg> ?line;
-              <http://purl.org/dc/elements/1.1/description> ?description.
+          ?text <http://example.org/vocabulary/correspondingSeg> ?line .
 
           OPTIONAL{?commentary <http://example.org/vocabulary/references> ?text}
         }
-        ORDER BY ?index
     `;
     const url = `${endpoint}?query=${encodeURIComponent(query)}&format=json`;
     fetch(url)
@@ -265,7 +255,7 @@ export default {
             //console.log("no existing text");
             texts.value.push({
             line: binding.line.value,
-            description: binding.description.value,
+            //description: binding.description.value,
             //もしcommentaryが存在すれば新たに連想配列を作成し、texts.valueに追加
             commentary: binding.commentary ? [binding.commentary.value] : []
           });
@@ -337,9 +327,22 @@ export default {
 
       commentary_list.value = []; // commentary_listを初期化
 
+      // containerという要素を取得
+      const container = document.getElementById("commentary_container");
+
+      // container内のすべての子要素を削除
+      while (container.firstChild) {
+        container.removeChild(container.firstChild);
+      }
+
       if (matchingText.commentary && matchingText.commentary.length > 0) {
         console.log(matchingText.commentary)
-        const endpoint = "http://54.92.185.36:3030/humanitext_reader/sparql";
+        
+        //const endpoint = "http://54.92.185.36:3030/humanitext_reader/sparql";
+        const endpoint = "https://dydra.com/junjun7613/humanitextonto/sparql";
+
+        // containerという要素を生成
+        const container = document.getElementById("commentary_container");
 
         for (const commentary of matchingText.commentary) {
 
@@ -349,9 +352,8 @@ export default {
               PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
               PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
-              SELECT DISTINCT ?description ?seg ?annotator ?work ?book WHERE {
-              <${commentary}> <http://purl.org/dc/elements/1.1/description> ?description ;
-                <http://purl.org/dc/elements/1.1/creator> ?annotator_uri ;
+              SELECT DISTINCT ?seg ?annotator ?work ?book WHERE {
+              <${commentary}> <http://purl.org/dc/elements/1.1/creator> ?annotator_uri ;
                 <http://example.org/vocabulary/correspondingSeg> ?seg;
                 <http://example.org/vocabulary/correspondingWork> ?work_uri ;
                 <http://example.org/vocabulary/correspondingBook> ?book .
@@ -373,15 +375,108 @@ export default {
                   //console.log(data);
                   // xml:idがroute.params.bookの要素を取得
                   const body = data.getElementById(binding.seg.value);
+                  
                   const stringBody = body.innerHTML;
                   console.log(stringBody);
                   teiContent.value = stringBody;
                   console.log(body);
-                  document.getElementById("Commentary_TEI").appendChild(body)
+                  //document.getElementById("Commentary_TEI").appendChild(body)
+                  // cardを作成
+                  const card = document.createElement("div");
+                  card.style.marginBottom = "20px";
+                  card.style.border = "1px solid #ccc";
+                  // card titleを作成し、cardに追加
+                  const cardTitle = document.createElement("h2");
+                  cardTitle.textContent = `${binding.annotator.value}: ${binding.work.value}:${binding.book.value}`;
+                  cardTitle.style.fontFamily = "Georgia, 'Times New Roman', Times, serif";
+                  cardTitle.style.fontSize = "24px";
+                  cardTitle.style.marginTop = "10px";
+                  cardTitle.style.marginBottom = "10px";
+                  cardTitle.style.marginLeft = "20px";
+                  cardTitle.style.marginRight = "20px";
+                  card.appendChild(cardTitle);
+                  // card bodyを作成し、cardに追加
+                  const cardBody = document.createElement("div");
+                  cardBody.appendChild(body);
+                  cardBody.style.fontFamily = "Georgia, 'Times New Roman', Times, serif";
+                  cardBody.style.fontSize = "20px";
+                  cardBody.style.overflow = "auto";
+                  cardBody.style.maxHeight = "500px";
+                  cardBody.style.marginLeft = "20px";
+                  cardBody.style.marginRight = "20px";
+                  cardBody.style.marginBottom = "20px";
+                  cardBody.style.padding = "10px";
+                  cardBody.style.borderRadius = "5px";
+                  card.appendChild(cardBody);
+                  // card footerを作成し、cardに追加
+                  const cardFooter = document.createElement("div");
+                  // 言語選択肢を作成
+                  const langSelect = document.createElement("select");
+                  options.value.forEach(option => {
+                    const opt = document.createElement("option");
+                    opt.value = option.id;
+                    opt.textContent = option.label;
+                    langSelect.appendChild(opt);
+                  });
+                  langSelect.value = lang.value;
+                  langSelect.style.fontSize = "18px";
+                  langSelect.style.marginTop = "15px";
+                  langSelect.style.marginBottom = "15px";
+                  langSelect.style.marginLeft = "20px";
+                  langSelect.style.marginRight = "20px";
+                  langSelect.style.padding = "10px"; // 内側の余白を追加
+                  langSelect.style.border = "2px solid #ccc"; // 枠線を追加
+                  langSelect.style.borderRadius = "5px"; // 角を丸くする
+                  langSelect.style.boxShadow = "0 2px 5px rgba(0, 0, 0, 0.1)"; // ボックスシャドウを追加
+                  langSelect.style.cursor = "pointer"; // ポインタを表示
+                  langSelect.addEventListener("change", (event) => {
+                    lang.value = event.target.value;
+                  });
+                  cardFooter.appendChild(langSelect);
+                  // 翻訳ボタンを作成し、cardに追加
+                  const translateButton = document.createElement("button");
+                  translateButton.textContent = "Translation";
+                  translateButton.style.fontFamily = "Georgia, 'Times New Roman', Times, serif";
+                  translateButton.style.fontSize = "18px";
+                  translateButton.style.backgroundColor = "#4CAF50"; // 緑色
+                  translateButton.style.color = "white"; // 白色
+                  translateButton.style.border = "none"; // 枠線なし
+                  translateButton.style.padding = "10px 20px"; // 内側の余白
+                  translateButton.style.borderRadius = "5px"; // 角を丸くする
+                  translateButton.style.marginTop = "15px";
+                  translateButton.style.marginBottom = "15px";
+                  translateButton.style.marginLeft = "20px";
+                  translateButton.style.marginRight = "20px";
+                  translateButton.style.cursor = "pointer"; // ポインタを表示
+                  translateButton.addEventListener("click", () => {
+                    commentaryTranslate(stringBody);
+                  });
+                  cardFooter.appendChild(translateButton);
+                  // 要約ボタンを作成し、cardに追加
+                  const summarizeButton = document.createElement("button");
+                  summarizeButton.textContent = "Summary";
+                  summarizeButton.style.fontFamily = "Georgia, 'Times New Roman', Times, serif";
+                  summarizeButton.style.fontSize = "18px";
+                  summarizeButton.style.backgroundColor = "#4CAF50"; // 緑色
+                  summarizeButton.style.color = "white"; // 白色
+                  summarizeButton.style.border = "none"; // 枠線なし
+                  summarizeButton.style.padding = "10px 20px"; // 内側の余白
+                  summarizeButton.style.borderRadius = "5px"; // 角を丸くする
+                  summarizeButton.style.marginTop = "15px";
+                  summarizeButton.style.marginBottom = "15px";
+                  summarizeButton.style.marginLeft = "20px";
+                  summarizeButton.style.marginRight = "20px";
+                  summarizeButton.addEventListener("click", () => {
+                    commentarySummarize(stringBody);
+                  });
+                  cardFooter.appendChild(summarizeButton);
+                  card.appendChild(cardFooter);
+
+                  container.appendChild(card);
                 })
                 
                 commentary_list.value.push({
-                  description: binding.description.value,
+                  //description: binding.description.value,
                   annotator: binding.annotator.value,
                   book: binding.book.value,
                   work: binding.work.value,
@@ -427,7 +522,7 @@ export default {
 
     // コメンタリーの内容を翻訳する
     const commentaryTranslate = (commentaryDesc) => {
-      //console.log(commentaryDesc);
+      console.log(commentaryDesc);
       LLMProcess(commentaryDesc, "translate").then((translatedText) => {
         //console.log(translatedText);
         if (translatedText) {
@@ -441,7 +536,7 @@ export default {
 
     // コメンタリーの内容を要約する
     const commentarySummarize = (commentaryDesc) => {
-      //console.log(commentaryDesc);
+      console.log(commentaryDesc);
       LLMProcess(commentaryDesc, "summarize").then((summarizedText) => {
         //console.log(summarizedText);
         if (summarizedText) {

@@ -1,7 +1,6 @@
 <template>
     <v-container fluid>
-    <h1 class="header">{{ route.params.author }}</h1>
-    <h1 class="header">{{route.params.work}}: {{ route.params.book }}</h1>
+    <h1 class="header">{{ route.params.author }}:{{route.params.work}}:{{ route.params.book }}</h1>
     <v-row>
       <v-col cols="12" md="6" class="scrollable">
         <div 

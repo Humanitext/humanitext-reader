@@ -5,12 +5,12 @@
       <v-col cols="12" md="6">
         <div>
           <div class="selectTheme">
-            <label for="work">著作を選択してください</label>
+            <label for="work">Select the Work: </label>
             <select id="work" v-model="selectedWork">
               <option value="all"> </option>
               <option v-for="work in works" :value="work">{{ work }}</option>
             </select>
-            <p>選択中の著作: {{ selectedWork }}</p>
+            <p>Selected Work: {{ selectedWork }}</p>
             <button style="border: 5px;" @click="handleConfirm">
               確定</button>
           </div>
@@ -86,5 +86,18 @@ export default {
 }
 .header {
   font-family: Georgia, 'Times New Roman', Times, serif;
+}
+button {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 20px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 5px; /* 角を丸くする */
 }
 </style>

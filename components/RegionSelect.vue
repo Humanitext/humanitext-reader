@@ -53,12 +53,15 @@ export default {
     <v-row>
       <v-col cols="12" md="6">
           <div class="selectTheme">
-            <label for="region">地域を選択してください</label>
-            <select id="region" v-model="selectedRegion">
+            <label for="region">Select the Genre: </label>
+            <select 
+              id="region" 
+              v-model="selectedRegion"
+              >
               <option value="all"> </option>
               <option v-for="region in regions" :value="region">{{ region }}</option>
             </select>
-            <p>選択中の地域: {{ selectedRegion }}</p>
+            <p>Selected Genre: {{ selectedRegion }}</p>
             <button style="border: 5px;" @click="handleConfirm">
               確定</button>
           </div>
@@ -76,5 +79,18 @@ export default {
   font-size: 24px;
   text-align: left;
   font-family: Georgia, 'Times New Roman', Times, serif;
+}
+button {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 20px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 5px; /* 角を丸くする */
 }
 </style>

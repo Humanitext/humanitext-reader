@@ -478,7 +478,7 @@ export default {
                   summarizeButton.style.borderRadius = "5px"; // 角を丸くする
                   summarizeButton.style.marginTop = "15px";
                   summarizeButton.style.marginBottom = "15px";
-                  summarizeButton.style.marginLeft = "20px";
+                  summarizeButton.style.marginLeft = "5px";
                   summarizeButton.style.marginRight = "20px";
                   summarizeButton.addEventListener("click", () => {
                     commentarySummarize(stringBody);

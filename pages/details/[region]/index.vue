@@ -63,12 +63,12 @@ export default {
       <v-col cols="12" md="6">
         <div>
           <div class="selectTheme">
-            <label for="author">著者を選択してください</label>
+            <label for="author">Select the Author: </label>
             <select id="author" v-model="selectedAuthor">
               <option value="all"> </option>
               <option v-for="author in authors" :value="author">{{ author }}</option>
             </select>
-            <p>選択中の著者: {{ selectedAuthor }}</p>
+            <p>Selected Author: {{ selectedAuthor }}</p>
             <button style="border: 5px;" @click="handleConfirm">
               確定</button>
           </div>
@@ -90,5 +90,18 @@ export default {
 }
 .header {
   font-family: Georgia, 'Times New Roman', Times, serif;
+}
+button {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 20px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 5px; /* 角を丸くする */
 }
 </style>

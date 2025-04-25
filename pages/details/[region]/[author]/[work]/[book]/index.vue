@@ -1,6 +1,7 @@
 <template>
     <v-container fluid>
-    <h1 class="header">Selected Book: {{ route.params.book }}</h1>
+    <h1 class="header">{{ route.params.author }}</h1>
+    <h1 class="header">{{route.params.work}}: {{ route.params.book }}</h1>
     <v-row>
       <v-col cols="12" md="6" class="scrollable">
         <div 
@@ -46,6 +47,7 @@
       -->
       </v-col>
       <v-col id="commentary_container" cols="12" md="6" class="scrollable">
+        <!--{{texts}}-->
         <!--commentary_listが存在する場合には、commentary_list内のcommentaryをループ処理-->
         <!--
         <div v-if="commentary_list && commentary_list.length > 0">
@@ -291,23 +293,32 @@ export default {
         "seg": (element) => {
           // <seg> 要素の xml:id を取得
           const xmlId = element.getAttribute('xml:id');
+          const matchingText = texts.value.find((text) => text.line === xmlId);
+
           if (xmlId) {
             // xml:id の値を表示するための <span> 要素を作成
             const idSpan = document.createElement("span");
             idSpan.textContent = `[${xmlId}] `;
-            idSpan.style.color = "blue"; // フォント色を青に設定
-            idSpan.style.cursor = "pointer"; // ポインタを表示
             idSpan.style.fontSize = "14px"; // フォントサイズを小さく設定
 
             // <seg> 要素の前に <span> を挿入
             element.parentNode.insertBefore(idSpan, element);
 
-            // クリックイベントを追加
-            idSpan.addEventListener("click", () => {
-              textClicked(xmlId);
-            });
-              
+            if (matchingText.commentary !== undefined && matchingText.commentary.length > 0) {
+              // クリックイベントを追加
+              idSpan.style.color = "blue"; // フォント色を青に設定
+              idSpan.style.cursor = "pointer"; // ポインタを表示
+              idSpan.addEventListener("click", () => {
+                textClicked(xmlId);
+              });
+            } 
+
           }
+
+          // <seg> 要素に改行を適用
+          element.style.display = "block"; // ブロック要素として扱う
+          element.style.marginBottom = "10px"; // 下に余白を追加
+
         }
       }
     };
@@ -609,7 +620,7 @@ export default {
   z-index: 9999 !important; /* 他の要素に隠れないように調整 */
 }
 tei-seg:before {
-  white-space: pre;
-  content: "\A";
+  content: "\A"; /* 改行を指定 */
+  white-space: pre; /* 改行を適用 */
 }
 </style>
